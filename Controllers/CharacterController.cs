@@ -11,6 +11,7 @@ public class CharacterController : ControllerBase
         new Character(),
         new Character
         {
+            Id = 1,
             Name = "Ana"
         }
     };
@@ -21,10 +22,10 @@ public class CharacterController : ControllerBase
         return Ok(characters);
     }
 
-    [HttpGet]
-    public ActionResult<Character> GetSingle()
+    [HttpGet("{id}")]
+    public ActionResult<Character> GetSingle(int id)
     {
-        return Ok(characters[0]);
+        return Ok(characters.FirstOrDefault(c => c.Id == id));
     }
 
 }
