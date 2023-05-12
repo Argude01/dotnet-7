@@ -6,11 +6,25 @@ namespace dotnet_7.Controllers;
 [Route("api/[controller]")]
 public class CharacterController : ControllerBase
 {
-    private static Character knight = new Character();
+    private static List<Character> characters = new List<Character>
+    {
+        new Character(),
+        new Character
+        {
+            Name = "Ana"
+        }
+    };
+
+    [HttpGet("GetAll")]
+    public ActionResult<List<Character>> Get()
+    {
+        return Ok(characters);
+    }
 
     [HttpGet]
-    public ActionResult<Character> Get()
+    public ActionResult<Character> GetSingle()
     {
-        return Ok(knight);
+        return Ok(characters[0]);
     }
+
 }
