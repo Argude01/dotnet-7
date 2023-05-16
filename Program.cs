@@ -1,3 +1,4 @@
+global using AutoMapper;
 global using dotnet_7.Models;
 global using dotnet_7.Services.CharacterService;
 global using dotnet_7.Dtos.Charater;
