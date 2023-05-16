@@ -38,8 +38,26 @@ public class CharacterService : ICharacterService
     public async Task<ServiceResponse<List<GetCharacterResponseDto>>> AddCharacter(AddCharacterRequestDto newCharacter)
     {
         var serviceResponse = new ServiceResponse<List<GetCharacterResponseDto>>();
-        characters.Add(_mapper.Map<Character>(newCharacter));
+        var character = _mapper.Map<Character>(newCharacter);
+        character.Id = characters.Max(c => c.Id) + 1;
+        characters.Add(character);
         serviceResponse.Data = characters.Select(c => _mapper.Map<GetCharacterResponseDto>(c)).ToList();
+        return serviceResponse;
+    }
+
+    public async Task<ServiceResponse<GetCharacterResponseDto>> UpdateCharacter(UpdateCharacterRequestDto updatedCharacter)
+    {
+        var serviceResponse = new ServiceResponse<GetCharacterResponseDto>();
+        var character = characters.FirstOrDefault(c => c.Id == updatedCharacter.Id);
+
+        character.Name = updatedCharacter.Name;
+        character.HitPoints = updatedCharacter.HitPoints;
+        character.Strength = updatedCharacter.Strength;
+        character.Defense = updatedCharacter.Defense;
+        character.Intelligence = updatedCharacter.Intelligence;
+        character.Class = updatedCharacter.Class;
+
+        serviceResponse.Data = _mapper.Map<GetCharacterResponseDto>(character);
         return serviceResponse;
     }
 }
