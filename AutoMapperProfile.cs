@@ -6,5 +6,6 @@ public class AutoMapperProfile : Profile
     {
         CreateMap<Character, GetCharacterResponseDto>();
         CreateMap<AddCharacterRequestDto, Character>();
+        CreateMap<UpdateCharacterRequestDto, Character>();
     }
 }

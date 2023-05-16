@@ -58,12 +58,14 @@ public class CharacterService : ICharacterService
             if (character is null)
                 throw new Exception($"Character with id {updatedCharacter.Id} not found");
 
-            character.Name = updatedCharacter.Name;
-            character.HitPoints = updatedCharacter.HitPoints;
-            character.Strength = updatedCharacter.Strength;
-            character.Defense = updatedCharacter.Defense;
-            character.Intelligence = updatedCharacter.Intelligence;
-            character.Class = updatedCharacter.Class;
+            _mapper.Map(updatedCharacter, character);
+
+            // character.Name = updatedCharacter.Name;
+            // character.HitPoints = updatedCharacter.HitPoints;
+            // character.Strength = updatedCharacter.Strength;
+            // character.Defense = updatedCharacter.Defense;
+            // character.Intelligence = updatedCharacter.Intelligence;
+            // character.Class = updatedCharacter.Class;
 
             serviceResponse.Data = _mapper.Map<GetCharacterResponseDto>(character);
         }
@@ -71,6 +73,30 @@ public class CharacterService : ICharacterService
         {
              serviceResponse.Success = false;
              serviceResponse.Message = ex.Message;
+        }
+
+        return serviceResponse;
+    }
+
+    public async Task<ServiceResponse<List<GetCharacterResponseDto>>> DeleteCharacter(int id)
+    {
+        var serviceResponse = new ServiceResponse<List<GetCharacterResponseDto>>();
+
+        try
+        {
+            var character = characters.FirstOrDefault(c => c.Id == id);
+
+            if (character is null)
+                throw new Exception($"Character with id {id} not found");
+
+            characters.Remove(character);
+
+            serviceResponse.Data = characters.Select(c => _mapper.Map<GetCharacterResponseDto>(c)).ToList();
+        }
+        catch (Exception ex)
+        {
+            serviceResponse.Success = false;
+            serviceResponse.Message = ex.Message;
         }
 
         return serviceResponse;
