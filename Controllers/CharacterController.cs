@@ -33,7 +33,12 @@ public class CharacterController : ControllerBase
     [HttpPut]
     public async Task<ActionResult<ServiceResponse<GetCharacterResponseDto>>> UpdateCharacter(UpdateCharacterRequestDto updatedCharacter)
     {
-        return Ok(await _characterService.UpdateCharacter(updatedCharacter));
+        var response = await _characterService.UpdateCharacter(updatedCharacter);
+        if (response.Data is null)
+        {
+            return NotFound(response);
+        }
+        return Ok(response);
     }
 
 }
